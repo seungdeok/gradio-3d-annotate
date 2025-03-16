@@ -1,6 +1,5 @@
 from gradio.components.base import Component
 import json
-import numpy as np
 
 
 class annotate3d(Component):
@@ -12,10 +11,10 @@ class annotate3d(Component):
     ):
         """
         Args:
-            value: data(points, tool)
+            value: { point_cloud_url, tool }
             label: component label
         """
-        self.value = value or {"points": [], "tool": None}
+        self.value = value or {"point_cloud_url": None, "tool": None}
         super().__init__(label=label, interactive=interactive)
 
     def preprocess(self, payload):
@@ -49,5 +48,4 @@ class annotate3d(Component):
         """
         document example
         """
-        points = np.random.rand(100, 3) * 2 - 1
-        return {"points": points.tolist(), "tools": "BoundingBox"}
+        return {"point_cloud_url": 'https://example.com/test.pcd', "tools": "BoundingBox"}

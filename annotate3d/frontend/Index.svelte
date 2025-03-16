@@ -1,16 +1,11 @@
 <script lang="ts">
 	import type { Gradio } from "@gradio/utils";
-	import type { SelectData } from "@gradio/utils";
 	import { afterUpdate } from "svelte";
 	
-	export let value: any = { points: [], tool: null };
+	export let value: any = { pointCloudUrl: null, tool: null };
 	export let value_is_output = false;
 	export let label = "";
-	export let gradio: Gradio<{
-		change: never;
-		select: SelectData;
-		input: never;
-	}>;
+	export let gradio: Gradio;
 	export let interactive: boolean = false;
   const is_browser = typeof window !== "undefined";
 
@@ -24,26 +19,24 @@
       try {
         parsedValue = JSON.parse(value);
 
-				pointCount = parsedValue.points.length;
 				currentTool = parsedValue.tool;
       } catch (e) {
-        console.error("JSON 파싱 오류:", e);
-        parsedValue = { points: [], tool: null };
+        parsedValue = { point_cloud_url: null, tool: null };
       }
     }
 	}
 	
-	function handle_change(newValue): void {
-		const data = {
-			...value,
-			...newValue
-		};
+	// function handle_change(newValue): void {
+	// 	const data = {
+	// 		...value,
+	// 		...newValue
+	// 	};
 		
-		gradio.dispatch("change");
-		if (!value_is_output) {
-			gradio.dispatch("input");
-		}
-	}
+	// 	gradio.dispatch("change");
+	// 	if (!value_is_output) {
+	// 		gradio.dispatch("input");
+	// 	}
+	// }
 	
 	afterUpdate(() => {
 		value_is_output = false;

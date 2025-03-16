@@ -26,25 +26,19 @@ pip install gradio_annotate3d
 
 import gradio as gr
 from gradio_annotate3d import annotate3d
-import numpy as np
-
-
-def load_point_cloud(point_cloud_url):
-    '''
-    TODO pointcloud parsing
-    '''
-    return np.random.rand(1000, 3) * 2 - 1
 
 
 def update_config_annotate3d(tool, point_cloud_url):
     if not point_cloud_url:
-        raise ValueError('URL을 입력해주세요')
+        raise gr.Error('URL을 입력해주세요')
+    if not str(point_cloud_url).endswith(('.ply', '.splat', '.bin')):
+        raise gr.Error('.ply, .splat, .bin파일이 아닙니다.')
     if not tool:
-        raise ValueError('Tool을 선택해주세요')
+        raise gr.Error('Tool을 선택해주세요')
 
     data = {
         "tool": tool,
-        "points": load_point_cloud(point_cloud_url).tolist()
+        "point_cloud_url": point_cloud_url,
     }
 
     return data
@@ -62,9 +56,9 @@ with gr.Blocks() as demo:
                 label="Annotation Tool",
                 interactive=True
             )
-            point_url = gr.Textbox(
+            point_cloud_url = gr.Textbox(
                 label="Point Cloud URL",
-                placeholder="URL을 입력해주세요(.bin, .pcd)"
+                placeholder="URL을 입력해주세요(.bin, .ply, .splat)"
             )
             update_btn = gr.Button("Submit")
 
@@ -82,7 +76,7 @@ with gr.Blocks() as demo:
     '''
     update_btn.click(
         fn=update_config_annotate3d,
-        inputs=[tool_combo, point_url],
+        inputs=[tool_combo, point_cloud_url],
         outputs=annotate_component
     )
 
