@@ -1,20 +1,18 @@
 <script lang="ts">
 	import type { Gradio } from "@gradio/utils";
-	import type { LoadingStatus } from "@gradio/statustracker";
 	import type { SelectData } from "@gradio/utils";
 	import { afterUpdate } from "svelte";
 	
 	export let value: any = { points: [], tool: null };
 	export let value_is_output = false;
 	export let label = "";
-	export let loading_status: LoadingStatus;
 	export let gradio: Gradio<{
 		change: never;
 		select: SelectData;
 		input: never;
-		clear_status: LoadingStatus;
 	}>;
-	export let interactive: boolean = true;
+	export let interactive: boolean = false;
+  const is_browser = typeof window !== "undefined";
 
 	let pointCount = 0;
 	let currentTool = value.tool || null;
@@ -52,10 +50,13 @@
 	});
 </script>
 
-<div class="annotate3d-container">
+<div class="annotate3d-container" class:interactive>
 	<!-- {#if label}
 		<label class="label">{label}</label>
 	{/if} -->
+
+  <!-- {#if interactive && is_browser}
+  {/if} -->
 	
 	<div class="content">
 		<div class="info-panel">
@@ -72,8 +73,8 @@
 			
 			{#if interactive}
 				<div class="button-section">
-					{#if currentTool === 'BoundingBox' && pointCount > 0}
-						<button class="refresh-btn" on:click={() => handle_change({ annotations: [] })}>
+					{#if pointCount > 0}
+						<button class="refresh-btn">
 							Clear
 						</button>
 					{/if}
@@ -101,6 +102,9 @@
     flex-direction: column;
     font-family: Arial, sans-serif;
   }
+
+  /* .annotate3d-container.interactive {
+  } */
   
   .label {
     font-weight: bold;

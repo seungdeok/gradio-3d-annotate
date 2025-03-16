@@ -45,7 +45,8 @@ with gr.Blocks() as demo:
 
         with gr.Column(scale=4):
             annotate_component = annotate3d(
-                label="3D Point Cloud Annotation"
+                label="3D Point Cloud Annotation",
+                interactive=True
             )
 
     with gr.Row():

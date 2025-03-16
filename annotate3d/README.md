@@ -70,7 +70,8 @@ with gr.Blocks() as demo:
 
         with gr.Column(scale=4):
             annotate_component = annotate3d(
-                label="3D Point Cloud Annotation"
+                label="3D Point Cloud Annotation",
+                interactive=True
             )
 
     with gr.Row():
@@ -103,7 +104,20 @@ if __name__ == "__main__":
 <th align="left">description</th>
 </tr>
 </thead>
-<tbody></tbody></table>
+<tbody>
+<tr>
+<td align="left"><code>interactive</code></td>
+<td align="left" style="width: 25%;">
+
+```python
+bool | None
+```
+
+</td>
+<td align="left"><code>None</code></td>
+<td align="left">None</td>
+</tr>
+</tbody></table>
 
 
 

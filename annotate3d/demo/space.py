@@ -3,7 +3,7 @@ import gradio as gr
 from app import demo as app
 import os
 
-_docs = {'annotate3d': {'description': 'A base class for defining methods that all input/output components should have.', 'members': {'__init__': {}, 'postprocess': {}, 'preprocess': {}}, 'events': {}}, '__meta__': {'additional_interfaces': {}}}
+_docs = {'annotate3d': {'description': 'A base class for defining methods that all input/output components should have.', 'members': {'__init__': {'interactive': {'type': 'bool | None', 'default': 'None', 'description': None}}, 'postprocess': {}, 'preprocess': {}}, 'events': {}}, '__meta__': {'additional_interfaces': {}}}
 
 abs_path = os.path.join(os.path.dirname(__file__), "css.css")
 
@@ -85,7 +85,8 @@ with gr.Blocks() as demo:
 
         with gr.Column(scale=4):
             annotate_component = annotate3d(
-                label="3D Point Cloud Annotation"
+                label="3D Point Cloud Annotation",
+                interactive=True
             )
 
     with gr.Row():

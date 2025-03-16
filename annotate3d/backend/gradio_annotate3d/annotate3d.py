@@ -4,14 +4,19 @@ import numpy as np
 
 
 class annotate3d(Component):
-    def __init__(self, value=None, label=None):
+    def __init__(
+        self,
+        value=None,
+        label=None,
+        interactive: bool | None = None,
+    ):
         """
         Args:
             value: data(points, tool)
             label: component label
         """
         self.value = value or {"points": [], "tool": None}
-        super().__init__(label=label)
+        super().__init__(label=label, interactive=interactive)
 
     def preprocess(self, payload):
         """
