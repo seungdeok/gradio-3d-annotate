@@ -1,32 +1,48 @@
 from gradio.components.base import Component
+import json
+import numpy as np
 
 
 class annotate3d(Component):
+    def __init__(self, value=None, label=None):
+        """
+        Args:
+            value: data(points, tool)
+            label: component label
+        """
+        self.value = value or {"points": [], "tool": None}
+        super().__init__(label=label)
+
     def preprocess(self, payload):
         """
-        This docstring is used to generate the docs for this custom component.
-        Parameters:
-            payload: the data to be preprocessed, sent from the frontend
-        Returns:
-            the data after preprocessing, sent to the user's function in the backend
+        frontend(JSON 문자열) -> backend(Python 객체)
         """
+        if payload is not None and isinstance(payload, str):
+            payload = json.loads(payload)
+        print('preprocess', payload)
         return payload
 
     def postprocess(self, value):
         """
-        This docstring is used to generate the docs for this custom component.
-        Parameters:
-            payload: the data to be postprocessed, sent from the user's function in the backend
-        Returns:
-            the data after postprocessing, sent to the frontend
+        backend(Python 객체) -> frontend(JSON 문자열)
         """
+        if value is not None:
+            value = json.dumps(value)
+        print('postprocess', value)
         return value
 
     def example_payload(self):
-        return {"foo": "bar"}
+        return {}
 
     def example_value(self):
-        return {"foo": "bar"}
+        return {}
+
+    def example_inputs(self):
+        return {}
 
     def api_info(self):
-        return {"type": {}, "description": "any valid json"}
+        """
+        document example
+        """
+        points = np.random.rand(100, 3) * 2 - 1
+        return {"points": points.tolist(), "tools": "BoundingBox"}

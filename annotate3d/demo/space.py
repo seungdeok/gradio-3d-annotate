@@ -3,7 +3,7 @@ import gradio as gr
 from app import demo as app
 import os
 
-_docs = {'annotate3d': {'description': 'A base class for defining methods that all input/output components should have.', 'members': {'__init__': {'value': {'type': 'Any', 'default': 'None', 'description': None}, 'label': {'type': 'str | None', 'default': 'None', 'description': None}, 'info': {'type': 'str | None', 'default': 'None', 'description': None}, 'show_label': {'type': 'bool | None', 'default': 'None', 'description': None}, 'container': {'type': 'bool', 'default': 'True', 'description': None}, 'scale': {'type': 'int | None', 'default': 'None', 'description': None}, 'min_width': {'type': 'int | None', 'default': 'None', 'description': None}, 'interactive': {'type': 'bool | None', 'default': 'None', 'description': None}, 'visible': {'type': 'bool', 'default': 'True', 'description': None}, 'elem_id': {'type': 'str | None', 'default': 'None', 'description': None}, 'elem_classes': {'type': 'list[str] | str | None', 'default': 'None', 'description': None}, 'render': {'type': 'bool', 'default': 'True', 'description': None}, 'key': {'type': 'int | str | None', 'default': 'None', 'description': None}, 'load_fn': {'type': 'Callable | None', 'default': 'None', 'description': None}, 'every': {'type': 'Timer | float | None', 'default': 'None', 'description': None}, 'inputs': {'type': 'Component | Sequence[Component] | set[Component] | None', 'default': 'None', 'description': None}}, 'postprocess': {}, 'preprocess': {}}, 'events': {}}, '__meta__': {'additional_interfaces': {}}}
+_docs = {'annotate3d': {'description': 'A base class for defining methods that all input/output components should have.', 'members': {'__init__': {}, 'postprocess': {}, 'preprocess': {}}, 'events': {}}, '__meta__': {'additional_interfaces': {}}}
 
 abs_path = os.path.join(os.path.dirname(__file__), "css.css")
 
@@ -41,16 +41,67 @@ pip install gradio_annotate3d
 
 import gradio as gr
 from gradio_annotate3d import annotate3d
+import numpy as np
+
+
+def load_point_cloud(point_cloud_url):
+    '''
+    TODO pointcloud parsing
+    '''
+    return np.random.rand(1000, 3) * 2 - 1
+
+
+def update_config_annotate3d(tool, point_cloud_url):
+    if not point_cloud_url:
+        raise ValueError('URL을 입력해주세요')
+    if not tool:
+        raise ValueError('Tool을 선택해주세요')
+
+    data = {
+        "tool": tool,
+        "points": load_point_cloud(point_cloud_url).tolist()
+    }
+
+    return data
 
 
 with gr.Blocks() as demo:
     gr.Markdown(
-        "# Change the value (keep it JSON) and the front-end will update automatically.")
-    annotate3d(value={"message": "Hello from Gradio!"}, label="Static")
+        "# 3D Point Cloud Annotation")
 
+    with gr.Row():
+        with gr.Column(scale=1):
+            tool_combo = gr.Dropdown(
+                choices=["BoundingBox"],
+                value="BoundingBox",
+                label="Annotation Tool",
+                interactive=True
+            )
+            point_url = gr.Textbox(
+                label="Point Cloud URL",
+                placeholder="URL을 입력해주세요(.bin, .pcd)"
+            )
+            update_btn = gr.Button("Submit")
+
+        with gr.Column(scale=4):
+            annotate_component = annotate3d(
+                label="3D Point Cloud Annotation"
+            )
+
+    with gr.Row():
+        result_json = gr.JSON(label="Annotation3D 결과")
+
+    '''
+    annotate_component:value로 주입
+    '''
+    update_btn.click(
+        fn=update_config_annotate3d,
+        inputs=[tool_combo, point_url],
+        outputs=annotate_component
+    )
 
 if __name__ == "__main__":
-    demo.launch(debug=True)
+    demo.launch(debug=True, share=False)
 
 ```
 """, elem_classes=["md-custom"], header_links=True)
