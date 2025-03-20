@@ -56,4 +56,4 @@ with gr.Blocks() as demo:
     )
 
 if __name__ == "__main__":
-    demo.launch(debug=True, share=False)
+    demo.launch(debug=True, share=False, server_name="0,0,0,0")

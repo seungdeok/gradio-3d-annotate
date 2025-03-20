@@ -19,7 +19,7 @@ class annotate3d(Component):
 
     def preprocess(self, payload):
         """
-        frontend(JSON 문자열) -> backend(Python 객체)
+        frontend:value -> backend(Python 객체) -> gradio
         """
         if payload is not None and isinstance(payload, str):
             payload = json.loads(payload)
@@ -28,7 +28,7 @@ class annotate3d(Component):
 
     def postprocess(self, value):
         """
-        backend(Python 객체) -> frontend(JSON 문자열)
+        gradio -> backend(Python 객체) -> frontend:value
         """
         if value is not None:
             value = json.dumps(value)

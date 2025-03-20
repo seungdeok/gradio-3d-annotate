@@ -45,7 +45,7 @@ classifiers = [
 dev = ["build", "twine"]
 
 [tool.hatch.build]
-artifacts = ["/backend/gradio_annotate3d/templates", "*.pyi"]
+artifacts = ["/backend/gradio_annotate3d/templates", "*.pyi", "backend/gradio_annotate3d/templates", "backend/gradio_annotate3d/templates", "backend/gradio_annotate3d/templates", "backend/gradio_annotate3d/templates", "backend/gradio_annotate3d/templates", "backend/gradio_annotate3d/templates", "backend/gradio_annotate3d/templates", "backend/gradio_annotate3d/templates", "backend/gradio_annotate3d/templates"]
 
 [tool.hatch.build.targets.wheel]
 packages = ["/backend/gradio_annotate3d"]

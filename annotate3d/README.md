@@ -1,13 +1,3 @@
----
-tags: [gradio-custom-component, ]
-title: gradio_annotate3d
-short_description: annotate3d
-colorFrom: blue
-colorTo: yellow
-sdk: gradio
-pinned: false
-app_file: space.py
----
 
 # `gradio_annotate3d`
 <img alt="Static Badge" src="https://img.shields.io/badge/version%20-%200.0.1%20-%20orange">  
